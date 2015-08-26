@@ -1,0 +1,90 @@
+var scene, camera, renderer, line;
+var geometry, material, mesh, array;
+
+function init() {
+
+  scene = new THREE.Scene();
+
+  camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera.position.z = 1000;
+
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+  document.body.appendChild( renderer.domElement );
+
+}
+
+function newLine() {
+  scene.remove(line);
+
+  var material = new THREE.LineBasicMaterial({
+    color: 0x1fdf1f,
+    linewidth: 2
+  });
+
+  var geometry = new THREE.Geometry();
+
+  array = new Uint8Array(analyser.frequencyBinCount);
+  analyser.getByteFrequencyData(array)
+
+  var Ypoints = array;
+  var xPoint = -2048;
+  for(var i=0;i<Ypoints.length;i++) {
+    geometry.vertices.push( new THREE.Vector3( xPoint, Ypoints[i], 0 ) );
+    xPoint = xPoint + 4;
+  }
+
+  line = new THREE.Line( geometry, material );
+  scene.add( line );
+}
+
+function animate() {
+
+  requestAnimationFrame( animate );
+  newLine();
+  renderer.render( scene, camera );
+
+}
+
+
+// Fix up prefixing
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var context = new AudioContext();
+
+function playSound(buffer) {
+  var source = context.createBufferSource(); // creates a sound source
+  source.buffer = buffer;                    // tell the source which sound to play
+  source.connect(context.destination);       // connect the source to the context's destination (the speakers)
+
+  analyser = context.createAnalyser();
+  source.connect(analyser);
+  analyser.connect(context.destination);
+
+  source.start(0);
+
+  //webgl begin
+  init();
+  animate();
+}
+
+function loadSound(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, true);
+  request.responseType = 'arraybuffer';
+
+  // Decode asynchronously
+  request.onload = function() {
+    context.decodeAudioData(request.response, function(buffer) {
+      playSound(buffer)
+
+    }, onError);
+  }
+  request.send();
+
+  function onError() {
+    console.log('error')
+  }
+}
+
+loadSound('../../audio/PaperPlanes.mp3');
