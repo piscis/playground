@@ -7,3 +7,7 @@ My playground for various stuff ... nothing useful here ... please move along.
 
 ### ThreeJS
   * [Simple ThreeJS spectrum](http://piscis.github.io/playground/threejs/src/examples/freq/index.html)
+  
+  
+## License
+[unlicense](https://raw.github.com/piscis/playground/master/LICENSE)
