@@ -1,6 +1,7 @@
 # playground
 My playground for various stuff ... nothing useful here ... please move along.
 
+![Evil Monkey](https://raw.github.com/piscis/playground/master/static/evil-monkey.png)
 
 ## Tryout's
 
