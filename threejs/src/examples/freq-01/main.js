@@ -1,4 +1,4 @@
-var scene, camera, renderer, line;
+var scene, camera, renderer, line, stats;
 var geometry, material, mesh, array;
 
 function init() {
@@ -13,6 +13,21 @@ function init() {
 
   document.body.appendChild( renderer.domElement );
 
+  stats = createStats();
+  document.body.appendChild(stats.domElement);
+
+  THREEx.WindowResize(renderer, camera);
+}
+
+function createStats() {
+  var stats = new Stats();
+  stats.setMode(0);
+
+  stats.domElement.style.position = 'absolute';
+  stats.domElement.style.left = '0px';
+  stats.domElement.style.top = '0px';
+
+  return stats;
 }
 
 function newLine() {
@@ -44,7 +59,7 @@ function animate() {
   requestAnimationFrame( animate );
   newLine();
   renderer.render( scene, camera );
-
+  stats.update();
 }
 
 
