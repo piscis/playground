@@ -4,6 +4,7 @@
   "description": "various tests with threejs",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm install http-server",
     "start": "http-server ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
